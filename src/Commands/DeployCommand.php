@@ -62,7 +62,7 @@ final class DeployCommand extends DeployerInstallerBootstrap
     {
         $this->bulkInfo(2, "Creating local environment deployment repository ({$this->transaction})...", 1);
 
-        deployer_rescue(function () {
+        larapush_rescue(function () {
             Local::createRepository($this->transaction);
         }, function ($exception) {
             $this->exception = $exception;
@@ -74,7 +74,7 @@ final class DeployCommand extends DeployerInstallerBootstrap
     {
         $this->bulkInfo(2, 'Running your post-scripts after unpacking your codebase (if they exist)...', 1);
 
-        deployer_rescue(function () {
+        larapush_rescue(function () {
             Local::getAccessToken()
                  ->runPostScripts($this->transaction);
         }, function ($exception) {
@@ -87,7 +87,7 @@ final class DeployCommand extends DeployerInstallerBootstrap
     {
         $this->bulkInfo(2, 'Unpacking your codebase on your remote server...', 1);
 
-        deployer_rescue(function () {
+        larapush_rescue(function () {
             Local::getAccessToken()
                  ->deploy($this->transaction);
         }, function ($exception) {
@@ -100,7 +100,7 @@ final class DeployCommand extends DeployerInstallerBootstrap
     {
         $this->bulkInfo(2, 'Running your pre-scripts before unpacking your codebase (if they exist)...', 1);
 
-        deployer_rescue(function () {
+        larapush_rescue(function () {
             Local::getAccessToken()
                  ->runPreScripts($this->transaction);
         }, function ($exception) {
@@ -113,7 +113,7 @@ final class DeployCommand extends DeployerInstallerBootstrap
     {
         $this->bulkInfo(2, 'Uploading package to remote environment...', 1);
 
-        deployer_rescue(function () {
+        larapush_rescue(function () {
             Local::getAccessToken()
                  ->uploadCodebase($this->transaction);
         }, function ($exception) {
@@ -126,7 +126,7 @@ final class DeployCommand extends DeployerInstallerBootstrap
     {
         $this->bulkInfo(2, 'Asking remote server to make its pre-checks...', 1);
 
-        deployer_rescue(function () {
+        larapush_rescue(function () {
             Local::getAccessToken()
                  ->askRemoteForPreChecks();
         }, function ($exception) {
@@ -139,7 +139,7 @@ final class DeployCommand extends DeployerInstallerBootstrap
     {
         $this->bulkInfo(2, 'Checking OAuth & remote environment connectivity...', 1);
 
-        deployer_rescue(function () {
+        larapush_rescue(function () {
             Local::getAccessToken()
                  ->ping();
         }, function ($exception) {
@@ -151,7 +151,7 @@ final class DeployCommand extends DeployerInstallerBootstrap
     protected function runPreChecks()
     {
         $this->bulkInfo(2, 'Checking local environment storage availability...', 1);
-        deployer_rescue(function () {
+        larapush_rescue(function () {
             Local::preChecks();
         }, function ($exception) {
             $this->exception = $exception;

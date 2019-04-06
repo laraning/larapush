@@ -9,9 +9,9 @@ abstract class RemoteBaseController extends Controller
 {
     public function __destruct()
     {
-        // Disable any active token for the deployer client.
+        // Disable any active token for the larapush client.
         DB::table('oauth_access_tokens')
-          ->where('client_id', app('config')->get('deployer.oauth.client'))
+          ->where('client_id', app('config')->get('larapush.oauth.client'))
           ->update(['revoked' => true]);
     }
 }

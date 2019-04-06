@@ -14,7 +14,7 @@ final class InstallRemoteCommand extends DeployerInstallerBootstrap
 
     private $secret;
 
-    protected $signature = 'deployer:install-remote';
+    protected $signature = 'larapush:install-remote';
 
     protected $description = 'Installs Deployer on your remote environment';
 
@@ -38,8 +38,8 @@ final class InstallRemoteCommand extends DeployerInstallerBootstrap
         $this->bar = $this->output->createProgressBar($this->steps);
         $this->bar->start();
 
-        // In case of a re-installation, delete all the .env deployer data.
-        $this->bulkInfo(2, 'Cleaning old .env deployer keys (if they exist)...', 1);
+        // In case of a re-installation, delete all the .env larapush data.
+        $this->bulkInfo(2, 'Cleaning old .env larapush keys (if they exist)...', 1);
         $this->unsetEnvData();
         $this->bar->advance();
 
@@ -83,7 +83,7 @@ final class InstallRemoteCommand extends DeployerInstallerBootstrap
     {
         $this->bulkInfo(2, 'ALL DONE!', 0);
         $this->bulkInfo(1, 'Please install Deployer on your local Laravel app and run the following artisan command:', 1);
-        $this->info("php artisan deployer:install-local --client={$this->client} --secret={$this->secret} --token={$this->token}");
+        $this->info("php artisan larapush:install-local --client={$this->client} --secret={$this->secret} --token={$this->token}");
     }
 
     protected function getClientCredentialsGrant()

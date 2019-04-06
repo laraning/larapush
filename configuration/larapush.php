@@ -1,6 +1,5 @@
 <?php
 
-use Laraning\Larapush\Deployer;
 use Laraning\Larapush\Support\ScriptType;
 
 return [
@@ -17,11 +16,11 @@ return [
      */
     'remote' => [
         // Your remote server URL.
-        // Manually configured when you install deployer on your local computer.
+        // Manually configured when you install larapush on your local computer.
         'url' => env('DEPLOYER_REMOTE_URL'),
 
-        // Your route prefix, default is <your-server-url>/deployer.
-        'prefix' => '/deployer',
+        // Your route prefix, default is <your-server-url>/larapush.
+        'prefix' => '/larapush',
     ],
 
     /*
@@ -62,7 +61,7 @@ return [
 
     // Folder path that will store your transaction codebase folders.
     'storage' => [
-        'path' => storage_path('app/deployer'),
+        'path' => storage_path('app/larapush'),
     ],
 
     /*

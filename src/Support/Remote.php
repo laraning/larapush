@@ -30,23 +30,23 @@ final class RemoteOperation
 
     public function unzipCodebase(string $transaction) : void
     {
-        if (Storage::disk('deployer')->exists("{$transaction}/codebase.zip")) {
-            Zipper::make(deployer_storage_path("{$transaction}/codebase.zip"))->extractTo(base_path(), app('config')->get('deployer.codebase.blacklist'), 2);
+        if (Storage::disk('larapush')->exists("{$transaction}/codebase.zip")) {
+            Zipper::make(larapush_storage_path("{$transaction}/codebase.zip"))->extractTo(base_path(), app('config')->get('larapush.codebase.blacklist'), 2);
         }
     }
 
     private function runScripts(string $type, string $transaction) : void
     {
-        if (Storage::disk('deployer')->exists("{$transaction}/runbook.json")) {
-            $resource = json_decode(Storage::disk('deployer')->get("{$transaction}/runbook.json"));
+        if (Storage::disk('larapush')->exists("{$transaction}/runbook.json")) {
+            $resource = json_decode(Storage::disk('larapush')->get("{$transaction}/runbook.json"));
 
             collect(data_get($resource, "{$type}_deployment"))->each(function ($item) use ($transaction, $type) {
                 $output = $this->runScript($item);
 
                 if ($output !== null) {
-                    Storage::disk('deployer')->append("{$transaction}/output_{$type}.json", "Command: {$item}");
-                    Storage::disk('deployer')->append("{$transaction}/output_{$type}.json", 'Output:');
-                    Storage::disk('deployer')->append("{$transaction}/output_{$type}.json", "{$output}");
+                    Storage::disk('larapush')->append("{$transaction}/output_{$type}.json", "Command: {$item}");
+                    Storage::disk('larapush')->append("{$transaction}/output_{$type}.json", 'Output:');
+                    Storage::disk('larapush')->append("{$transaction}/output_{$type}.json", "{$output}");
                 }
             });
         }
@@ -64,7 +64,7 @@ final class RemoteOperation
 
     public function preChecks() : void
     {
-        $storagePath = app('config')->get('deployer.storage.path');
+        $storagePath = app('config')->get('larapush.storage.path');
         if (! is_dir($storagePath)) {
             mkdir($storagePath, 0755, true);
         }
@@ -76,13 +76,13 @@ final class RemoteOperation
 
     public function storeRepository(CodebaseRepository $repository) : void
     {
-        deployer_rescue(function () use ($repository) {
-            // Create a new transaction folder inside the deployer storage.
-            Storage::disk('deployer')->makeDirectory($repository->transaction());
+        larapush_rescue(function () use ($repository) {
+            // Create a new transaction folder inside the larapush storage.
+            Storage::disk('larapush')->makeDirectory($repository->transaction());
 
             // Store the runbook, and the zip codebase file.
-            Storage::disk('deployer')->put("{$repository->transaction()}/codebase.zip", $repository->codebaseStream());
-            Storage::disk('deployer')->put("{$repository->transaction()}/runbook.json", $repository->runbook());
+            Storage::disk('larapush')->put("{$repository->transaction()}/codebase.zip", $repository->codebaseStream());
+            Storage::disk('larapush')->put("{$repository->transaction()}/runbook.json", $repository->runbook());
         }, function ($exception) {
             throw new RemoteException($exception->getMessage());
         });

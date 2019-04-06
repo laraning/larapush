@@ -24,16 +24,16 @@ final class LocalOperation
 
     public function createRepository(string $transaction) : void
     {
-        // Create a new transaction folder inside the deployer storage.
-        Storage::disk('deployer')->makeDirectory($transaction);
+        // Create a new transaction folder inside the larapush storage.
+        Storage::disk('larapush')->makeDirectory($transaction);
 
         // Create zip, and store it inside the transaction folder.
-        $this->CreateCodebaseZip(deployer_storage_path("{$transaction}/codebase.zip"));
+        $this->CreateCodebaseZip(larapush_storage_path("{$transaction}/codebase.zip"));
 
         // Store the runbook, and the zip codebase file.
-        Storage::disk('deployer')->put(
+        Storage::disk('larapush')->put(
             "{$transaction}/runbook.json",
-            json_encode(app('config')->get('deployer.scripts'))
+            json_encode(app('config')->get('larapush.scripts'))
         );
     }
 
@@ -42,9 +42,9 @@ final class LocalOperation
         $response = ReSTCaller::asPost()
                               ->withHeader('Authorization', 'Bearer '.$this->accessToken->token)
                               ->withHeader('Accept', 'application/json')
-                              ->withPayload(['deployer-token' => app('config')->get('deployer.token')])
+                              ->withPayload(['larapush-token' => app('config')->get('larapush.token')])
                               ->withPayload(['transaction' => $transaction])
-                              ->call(deployer_remote_url('post-scripts'));
+                              ->call(larapush_remote_url('post-scripts'));
 
         $this->checkResponseAcknowledgement($response);
     }
@@ -54,9 +54,9 @@ final class LocalOperation
         $response = ReSTCaller::asPost()
                               ->withHeader('Authorization', 'Bearer '.$this->accessToken->token)
                               ->withHeader('Accept', 'application/json')
-                              ->withPayload(['deployer-token' => app('config')->get('deployer.token')])
+                              ->withPayload(['larapush-token' => app('config')->get('larapush.token')])
                               ->withPayload(['transaction' => $transaction])
-                              ->call(deployer_remote_url('deploy'));
+                              ->call(larapush_remote_url('deploy'));
 
         $this->checkResponseAcknowledgement($response);
     }
@@ -66,16 +66,16 @@ final class LocalOperation
         $response = ReSTCaller::asPost()
                               ->withHeader('Authorization', 'Bearer '.$this->accessToken->token)
                               ->withHeader('Accept', 'application/json')
-                              ->withPayload(['deployer-token' => app('config')->get('deployer.token')])
+                              ->withPayload(['larapush-token' => app('config')->get('larapush.token')])
                               ->withPayload(['transaction' => $transaction])
-                              ->call(deployer_remote_url('pre-scripts'));
+                              ->call(larapush_remote_url('pre-scripts'));
 
         $this->checkResponseAcknowledgement($response);
     }
 
     public function CreateCodebaseZip(string $fqfilename) : void
     {
-        if (count(app('config')->get('deployer.codebase.folders')) == 0 && count(app('config')->get('deployer.codebase.files')) == 0) {
+        if (count(app('config')->get('larapush.codebase.folders')) == 0 && count(app('config')->get('larapush.codebase.files')) == 0) {
             throw new LocalException('No files or folders identified to upload. Please check your configuration file');
         }
 
@@ -88,13 +88,13 @@ final class LocalOperation
          * pathinfo function.
          */
 
-        collect(app('config')->get('deployer.codebase.folders'))->each(function ($item) use (&$zip) {
+        collect(app('config')->get('larapush.codebase.folders'))->each(function ($item) use (&$zip) {
             if (! blank($item)) {
                 $zip->folder($item)->add(base_path($item));
             }
         });
 
-        collect(app('config')->get('deployer.codebase.files'))->each(function ($item) use (&$zip) {
+        collect(app('config')->get('larapush.codebase.files'))->each(function ($item) use (&$zip) {
             if (! blank($item)) {
                 $fileData = pathinfo($item);
                 $zip->folder($fileData['dirname'])->add(base_path($item));
@@ -109,18 +109,18 @@ final class LocalOperation
         $response = ReSTCaller::asPost()
                               ->withHeader('Authorization', 'Bearer '.$this->accessToken->token)
                               ->withHeader('Accept', 'application/json')
-                              ->withPayload(['deployer-token' => app('config')->get('deployer.token')])
+                              ->withPayload(['larapush-token' => app('config')->get('larapush.token')])
                               ->withPayload(['transaction' => $transaction])
-                              ->withPayload(['runbook' => json_encode(app('config')->get('deployer.scripts'))])
-                              ->withPayload(['codebase' => base64_encode(file_get_contents(deployer_storage_path("{$transaction}/codebase.zip")))])
-                              ->call(deployer_remote_url('upload'));
+                              ->withPayload(['runbook' => json_encode(app('config')->get('larapush.scripts'))])
+                              ->withPayload(['codebase' => base64_encode(file_get_contents(larapush_storage_path("{$transaction}/codebase.zip")))])
+                              ->call(larapush_remote_url('upload'));
 
         $this->checkResponseAcknowledgement($response);
     }
 
     public function preChecks() : void
     {
-        $storagePath = app('config')->get('deployer.storage.path');
+        $storagePath = app('config')->get('larapush.storage.path');
         if (! is_dir($storagePath)) {
             mkdir($storagePath, 0755, true);
         }
@@ -134,10 +134,10 @@ final class LocalOperation
     {
         $response = ReSTCaller::asPost()
                            ->withPayload(['grant_type'    => 'client_credentials',
-                                          'client_id'     => app('config')->get('deployer.oauth.client'),
-                                          'client_secret' => app('config')->get('deployer.oauth.secret'), ])
+                                          'client_id'     => app('config')->get('larapush.oauth.client'),
+                                          'client_secret' => app('config')->get('larapush.oauth.secret'), ])
                            ->withHeader('Accept', 'application/json')
-                           ->call(app('config')->get('deployer.remote.url').'/oauth/token');
+                           ->call(app('config')->get('larapush.remote.url').'/oauth/token');
 
         $this->checkAccessToken($response);
 
@@ -154,8 +154,8 @@ final class LocalOperation
         $response = ReSTCaller::asPost()
                           ->withHeader('Authorization', 'Bearer '.$this->accessToken->token)
                           ->withHeader('Accept', 'application/json')
-                          ->withPayload(['deployer-token' => app('config')->get('deployer.token')])
-                          ->call(deployer_remote_url('prechecks'));
+                          ->withPayload(['larapush-token' => app('config')->get('larapush.token')])
+                          ->call(larapush_remote_url('prechecks'));
 
         $this->checkResponseAcknowledgement($response);
     }
@@ -165,8 +165,8 @@ final class LocalOperation
         $response = ReSTCaller::asPost()
                           ->withHeader('Authorization', 'Bearer '.$this->accessToken->token)
                           ->withHeader('Accept', 'application/json')
-                          ->withPayload(['deployer-token' => app('config')->get('deployer.token')])
-                          ->call(deployer_remote_url('ping'));
+                          ->withPayload(['larapush-token' => app('config')->get('larapush.token')])
+                          ->call(larapush_remote_url('ping'));
 
         $this->checkResponseAcknowledgement($response);
     }

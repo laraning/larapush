@@ -7,14 +7,12 @@ function ascii_title()
      * Credits to patorjk.com/software/taag/
      */
     return "
-          _____             _
-         |  __ \           | |
-         | |  | | ___ _ __ | | ___  _   _  ___ _ __
-         | |  | |/ _ \ '_ \| |/ _ \| | | |/ _ \ '__|
-         | |__| |  __/ |_) | | (_) | |_| |  __/ |
-         |_____/ \___| .__/|_|\___/ \__, |\___|_|
-                     | |             __/ |
-                     |_|            |___/
+
+  _                               _
+ | |   __ _ _ _ __ _ _ __ _  _ __| |_
+ | |__/ _` | '_/ _` | '_ \ || (_-< ' \
+ |____\__,_|_| \__,_| .__/\_,_/__/_||_|
+                    |_|
         ";
 }
 
@@ -28,15 +26,15 @@ function capsule(bool $result, $message = null, $payload = null)
     return $capsule;
 }
 
-function deployer_remote_url($path)
+function larapush_remote_url($path)
 {
-    return app('config')->get('deployer.remote.url').
-           deployer_url($path);
+    return app('config')->get('larapush.remote.url').
+           larapush_url($path);
 }
 
-function deployer_url($url)
+function larapush_url($url)
 {
-    return config('deployer.remote.prefix')."/{$url}";
+    return config('larapush.remote.prefix')."/{$url}";
 }
 
 function append_line_to_env(string $key, $value)
@@ -51,9 +49,9 @@ function response_payload($result, $payload = [], $statusCode = 200)
     return response(json_encode($data), $statusCode);
 }
 
-function deployer_storage_path($path = null)
+function larapush_storage_path($path = null)
 {
-    return app('config')->get('deployer.storage.path')."/{$path}";
+    return app('config')->get('larapush.storage.path')."/{$path}";
 }
 
 function generate_transaction_code()
@@ -61,7 +59,7 @@ function generate_transaction_code()
     return date('Ymd-His').'-'.strtoupper(str_random(5));
 }
 
-function deployer_rescue(callable $callback, $rescue = null)
+function larapush_rescue(callable $callback, $rescue = null)
 {
     try {
         return $callback();

@@ -16,7 +16,7 @@ final class DeployerServiceProvider extends ServiceProvider
     {
         $this->publishConfiguration();
 
-        if (config('deployer.type') == 'remote' && class_exists('\Laravel\Passport\Passport')) {
+        if (config('larapush.type') == 'remote' && class_exists('\Laravel\Passport\Passport')) {
             $this->loadRemoteRoutes();
         }
 
@@ -26,9 +26,9 @@ final class DeployerServiceProvider extends ServiceProvider
     private function registerStorage()
     {
         $this->app['config']->set('filesystems.disks', [
-            'deployer' => [
+            'larapush' => [
                 'driver' => 'local',
-                'root' => app('config')->get('deployer.storage.path'),
+                'root' => app('config')->get('larapush.storage.path'),
             ],
         ]);
     }
@@ -37,18 +37,18 @@ final class DeployerServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../configuration/deployer.php' => config_path('deployer.php'),
-            ], 'deployer-configuration');
+                __DIR__.'/../configuration/larapush.php' => config_path('larapush.php'),
+            ], 'larapush-configuration');
         }
     }
 
     protected function loadRemoteRoutes()
     {
         // Load Deployer routes using the api middleware.
-        Route::as('deployer.')
+        Route::as('larapush.')
              ->middleware('same-token', 'client')
              ->namespace('Laraning\Larapush\Http\Controllers')
-             ->prefix(app('config')->get('deployer.remote.prefix'))
+             ->prefix(app('config')->get('larapush.remote.prefix'))
              ->group(__DIR__.'/../routes/api.php');
 
         // Load Laravel Passport routes.
@@ -58,8 +58,8 @@ final class DeployerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../configuration/deployer.php',
-            'deployer'
+            __DIR__.'/../configuration/larapush.php',
+            'larapush'
         );
 
         $this->commands([

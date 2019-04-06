@@ -14,7 +14,7 @@ final class InstallLocalCommand extends DeployerInstallerBootstrap
         'token.required'  => 'The --token option is required.',
     ];
 
-    protected $signature = 'deployer:install-local
+    protected $signature = 'larapush:install-local
                             {--client= : Your OAuth Laravel Passport Client id}
                             {--secret= : Your OAuth Secret}
                             {--token= : The Remote server token, must be the same}';
@@ -37,8 +37,8 @@ final class InstallLocalCommand extends DeployerInstallerBootstrap
         $bar = $this->output->createProgressBar($this->steps);
         $bar->start();
 
-        // In case of a re-installation, delete all the .env deployer data.
-        $this->bulkInfo(2, 'Cleaning old .env deployer keys (if they exist)...', 1);
+        // In case of a re-installation, delete all the .env larapush data.
+        $this->bulkInfo(2, 'Cleaning old .env larapush keys (if they exist)...', 1);
         $this->unsetEnvData();
         $bar->advance();
 
@@ -78,6 +78,6 @@ final class InstallLocalCommand extends DeployerInstallerBootstrap
     protected function showLastResumedInformation()
     {
         $this->bulkInfo(2, 'All good! Now you can deploy your codebase to your remote server!', 1);
-        $this->info("Don't forget to update your deployer.php configuration file for the correct codebase files and directories that you want to upload.");
+        $this->info("Don't forget to update your larapush.php configuration file for the correct codebase files and directories that you want to upload.");
     }
 }
