@@ -1,15 +1,13 @@
 # Larapush
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/laraning/larapush.svg?style=flat-square)](https://packagist.org/packages/laraning/larapush)
-[![Build Status](https://img.shields.io/travis/laraning/larapush/master.svg?style=flat-square)](https://travis-ci.org/laraning/larapush)
-[![Quality Score](https://img.shields.io/scrutinizer/g/laraning/larapush.svg?style=flat-square)](https://scrutinizer-ci.com/g/laraning/larapush)
-[![Total Downloads](https://img.shields.io/packagist/dt/laraning/larapush.svg?style=flat-square)](https://packagist.org/packages/laraning/larapush)
-
 A way to deploy your codebase into your remote server in a single Artisan command: php artisan push.
 
 ## Installation
 
-You can install the package via composer:
+Larapush needs to be installed in your both environments:
+
+Your remote server (called remote)
+Your local development project (called local)
 
 ```bash
 composer require laraning/larapush
