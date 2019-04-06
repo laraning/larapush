@@ -10,7 +10,7 @@ use Laraning\Larapush\Commands\InstallLocalCommand;
 use Laraning\Larapush\Commands\InstallRemoteCommand;
 use Laravel\Passport\Http\Middleware\CheckClientCredentials;
 
-final class DeployerServiceProvider extends ServiceProvider
+final class LarapushServiceProvider extends ServiceProvider
 {
     public function boot()
     {
