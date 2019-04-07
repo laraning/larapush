@@ -16,6 +16,7 @@ trait CanRunProcesses
         $process->run();
 
         if (! $process->isSuccessful()) {
+            dd($process->getOutput(), $process->getErrorOutput());
             throw new RuntimeException($process->getErrorOutput());
         }
 

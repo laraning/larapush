@@ -97,32 +97,75 @@ final class InstallRemoteCommand extends InstallerBootstrap
     {
         $this->bulkInfo(2, 'Installing Laravel Password client credentials grant...', 1);
         $appName = 'Larapush Grant Client';
+
+        larapush_rescue(function () use ($appName) {
+            $this->runProcess("php artisan passport:client --client
+                                                           --name=\"{$appName}\"
+                                                           --quiet", getcwd());
+            //Artisan::call("passport:client --client --name=\"{$appName}\" --quiet");
+        }, function ($exception) {
+            $this->exception = $exception;
+            $this->gracefullyExit();
+        });
+
+        /*
         $this->runProcess("php artisan passport:client --client
                                                        --name=\"{$appName}\"
                                                        --quiet", getcwd());
+        */
     }
 
     protected function installLaravelPassport()
     {
-        $this->bulkInfo(2, 'Installing Laravel Passport package via Composer...', 1);
+        $this->bulkInfo(2, 'Requiring Laravel Passport package via Composer (might take some minutes)...', 1);
         $this->bar->advance();
-        $this->bulkInfo(2);
         $this->runProcess('composer require laravel/passport');
         $this->runProcess('composer dumpautoload');
-        $this->bulkInfo(1, 'Publishing Laravel Passport resources', 1);
+
+        $this->bulkInfo(2, 'Publishing Laravel Passport resources', 1);
         $this->bar->advance();
+
         $this->bulkInfo(2, 'Publishing Laravel Passport configuration...', 1);
-        $this->runProcess('php artisan vendor:publish --tag=passport-config');
+
+        larapush_rescue(function () {
+            //Artisan::call("vendor:publish --tag=passport-config");
+            $this->runProcess('php artisan vendor:publish --tag=passport-config');
+        }, function ($exception) {
+            $this->exception = $exception;
+            $this->gracefullyExit();
+        });
+
+        //$this->runProcess('php artisan vendor:publish --tag=passport-config');
         $this->bar->advance();
+
         $this->bulkInfo(2, 'Running Laravel Passport migrations...', 1);
-        $this->runProcess('php artisan migrate');
+
+        larapush_rescue(function () {
+            //Artisan::call("migrate");
+            $this->runProcess('php artisan migrate');
+        }, function ($exception) {
+            $this->exception = $exception;
+            $this->gracefullyExit();
+        });
+
+        //$this->runProcess('php artisan migrate');
         $this->bar->advance();
+
         $this->bulkInfo(2, 'Installing Laravel Passport...', 1);
-        $this->runProcess('php artisan passport:install');
+
+        larapush_rescue(function () {
+            //Artisan::call("passport:install");
+            $this->runProcess('php artisan passport:install');
+        }, function ($exception) {
+            $this->exception = $exception;
+            $this->gracefullyExit();
+        });
+
+        //$this->runProcess('php artisan passport:install');
         $this->bar->advance();
-        $this->bulkInfo(2, 'Dumping autoload...', 0);
+
+        $this->bulkInfo(2, 'Dumping autoload...', 1);
         $this->bar->advance();
-        $this->bulkInfo(1);
         $this->runProcess('composer dumpautoload');
     }
 }
