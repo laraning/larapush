@@ -31,7 +31,7 @@ final class InstallRemoteCommand extends InstallerBootstrap
 
         // Laravel Passport installed?
         if (! is_dir(base_path('vendor/laravel/passport'))) {
-            $this->steps += 6;
+            $this->steps += 5;
         }
 
         $this->bulkInfo(2, 'Installing Larapush on a REMOTE environment...', 1);
@@ -102,53 +102,40 @@ final class InstallRemoteCommand extends InstallerBootstrap
             $this->runProcess("php artisan passport:client --client
                                                            --name=\"{$appName}\"
                                                            --quiet", getcwd());
-            //Artisan::call("passport:client --client --name=\"{$appName}\" --quiet");
         }, function ($exception) {
             $this->exception = $exception;
             $this->gracefullyExit();
         });
-
-        /*
-        $this->runProcess("php artisan passport:client --client
-                                                       --name=\"{$appName}\"
-                                                       --quiet", getcwd());
-        */
     }
 
     protected function installLaravelPassport()
     {
         $this->bulkInfo(2, 'Requiring Laravel Passport package via Composer (might take some minutes)...', 1);
         $this->bar->advance();
+
         $this->runProcess('composer require laravel/passport');
         $this->runProcess('composer dumpautoload');
-
-        $this->bulkInfo(2, 'Publishing Laravel Passport resources', 1);
-        $this->bar->advance();
 
         $this->bulkInfo(2, 'Publishing Laravel Passport configuration...', 1);
 
         larapush_rescue(function () {
-            //Artisan::call("vendor:publish --tag=passport-config");
             $this->runProcess('php artisan vendor:publish --tag=passport-config');
         }, function ($exception) {
             $this->exception = $exception;
             $this->gracefullyExit();
         });
 
-        //$this->runProcess('php artisan vendor:publish --tag=passport-config');
         $this->bar->advance();
 
         $this->bulkInfo(2, 'Running Laravel Passport migrations...', 1);
 
         larapush_rescue(function () {
-            //Artisan::call("migrate");
             $this->runProcess('php artisan migrate');
         }, function ($exception) {
             $this->exception = $exception;
             $this->gracefullyExit();
         });
 
-        //$this->runProcess('php artisan migrate');
         $this->bar->advance();
 
         $this->bulkInfo(2, 'Installing Laravel Passport...', 1);
