@@ -6,7 +6,7 @@ use Laravel\Passport\Client;
 use Illuminate\Support\Facades\DB;
 use sixlive\DotenvEditor\DotenvEditor;
 use Illuminate\Support\Facades\Artisan;
-use Laraning\Larapush\Abstracts\LaraningInstallerBootstrap;
+use Laraning\Larapush\Abstracts\InstallerBootstrap;
 
 final class InstallRemoteCommand extends LaraningInstallerBootstrap
 {
@@ -16,7 +16,7 @@ final class InstallRemoteCommand extends LaraningInstallerBootstrap
 
     protected $signature = 'larapush:install-remote';
 
-    protected $description = 'Installs Laraning on your remote environment';
+    protected $description = 'Installs Larapush on your remote environment';
 
     public function __construct()
     {
@@ -34,7 +34,7 @@ final class InstallRemoteCommand extends LaraningInstallerBootstrap
             $this->steps += 6;
         }
 
-        $this->bulkInfo(2, 'Installing Laraning on a REMOTE environment...', 1);
+        $this->bulkInfo(2, 'Installing Larapush on a REMOTE environment...', 1);
         $this->bar = $this->output->createProgressBar($this->steps);
         $this->bar->start();
 
@@ -47,7 +47,7 @@ final class InstallRemoteCommand extends LaraningInstallerBootstrap
             $this->installLaravelPassport();
         }
 
-        $this->publishLaraningResources();
+        $this->publishLarapushResources();
         $this->bar->advance();
 
         $this->installClientCredentialsGrant();
@@ -82,7 +82,7 @@ final class InstallRemoteCommand extends LaraningInstallerBootstrap
     protected function showLocalInstallInformation()
     {
         $this->bulkInfo(2, 'ALL DONE!', 0);
-        $this->bulkInfo(1, 'Please install Laraning on your local Laravel app and run the following artisan command:', 1);
+        $this->bulkInfo(1, 'Please install Larapush on your local Laravel app and run the following artisan command:', 1);
         $this->info("php artisan larapush:install-local --client={$this->client} --secret={$this->secret} --token={$this->token}");
     }
 
@@ -96,7 +96,7 @@ final class InstallRemoteCommand extends LaraningInstallerBootstrap
     protected function installClientCredentialsGrant()
     {
         $this->bulkInfo(2, 'Installing Laravel Password client credentials grant...', 1);
-        $appName = 'Laravel Laraning Grant Client';
+        $appName = 'Larapush Grant Client';
         $this->runProcess("php artisan passport:client --client
                                                        --name=\"{$appName}\"
                                                        --quiet", getcwd());
@@ -120,7 +120,7 @@ final class InstallRemoteCommand extends LaraningInstallerBootstrap
         $this->bulkInfo(2, 'Installing Laravel Passport...', 1);
         $this->runProcess('php artisan passport:install');
         $this->bar->advance();
-        $this->bulkInfo(2, 'Refreshing autoload...', 0);
+        $this->bulkInfo(2, 'Dumping autoload...', 0);
         $this->bar->advance();
         $this->bulkInfo(1);
         $this->runProcess('composer dumpautoload');

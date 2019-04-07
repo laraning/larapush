@@ -4,15 +4,15 @@ namespace Laraning\Larapush\Commands;
 
 use Laraning\Larapush\Support\Local;
 use Laraning\Larapush\Concerns\SimplifiesConsoleOutput;
-use Laraning\Larapush\Abstracts\LaraningInstallerBootstrap;
+use Laraning\Larapush\Abstracts\InstallerBootstrap;
 
-final class PushCommand extends LaraningInstallerBootstrap
+final class PushCommand extends InstallerBootstrap
 {
     use SimplifiesConsoleOutput;
 
     protected $signature = 'push';
 
-    protected $description = 'Deploys your codebase content to your remote environment';
+    protected $description = 'Pushes your codebase content to your remote environment';
 
     public function __construct()
     {
@@ -55,12 +55,12 @@ final class PushCommand extends LaraningInstallerBootstrap
         $this->runPostScripts();
         $bar->finish();
 
-        $this->bulkInfo(2, '*** All good! Package deployed! ***', 1);
+        $this->bulkInfo(2, '*** All good! Codebase pushed to your remote server! ***', 1);
     }
 
     protected function createLocalRepository()
     {
-        $this->bulkInfo(2, "Creating local environment deployment repository ({$this->transaction})...", 1);
+        $this->bulkInfo(2, "Creating local environment codebase repository ({$this->transaction})...", 1);
 
         larapush_rescue(function () {
             Local::createRepository($this->transaction);
@@ -111,7 +111,7 @@ final class PushCommand extends LaraningInstallerBootstrap
 
     protected function uploadCodebase()
     {
-        $this->bulkInfo(2, 'Uploading package to remote environment...', 1);
+        $this->bulkInfo(2, 'Uploading codebase to your remote environment...', 1);
 
         larapush_rescue(function () {
             Local::getAccessToken()
@@ -137,7 +137,7 @@ final class PushCommand extends LaraningInstallerBootstrap
 
     protected function pingRemote()
     {
-        $this->bulkInfo(2, 'Checking OAuth & remote environment connectivity...', 1);
+        $this->bulkInfo(2, 'Checking OAuth & remote server connectivity...', 1);
 
         larapush_rescue(function () {
             Local::getAccessToken()
@@ -150,7 +150,7 @@ final class PushCommand extends LaraningInstallerBootstrap
 
     protected function runPreChecks()
     {
-        $this->bulkInfo(2, 'Checking local environment storage availability...', 1);
+        $this->bulkInfo(2, 'Checking your local storage availability/permissions...', 1);
         larapush_rescue(function () {
             Local::preChecks();
         }, function ($exception) {

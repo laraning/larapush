@@ -8,9 +8,9 @@ trait SharedInstallerActions
 {
     protected function publishLarapushResources()
     {
-        $this->bulkInfo(2, 'Publishing Laraning resources...', 1);
+        $this->bulkInfo(2, 'Publishing Larapush resources...', 1);
         $this->runProcess('php artisan vendor:publish
-                                       --provider="Laraning\Larapush\LaraningServiceProvider"
+                                       --provider="Laraning\Larapush\LarapushServiceProvider"
                                        --force
                                        --quiet');
     }
