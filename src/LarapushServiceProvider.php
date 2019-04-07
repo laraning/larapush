@@ -2,13 +2,13 @@
 
 namespace Laraning\Larapush;
 
+use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Laraning\Larapush\Commands\PushCommand;
 use Laraning\Larapush\Commands\InstallLocalCommand;
 use Laraning\Larapush\Commands\InstallRemoteCommand;
-use Laraning\Larapush\Commands\PushCommand;
 use Laravel\Passport\Http\Middleware\CheckClientCredentials;
-use Laravel\Passport\Passport;
 
 final class LarapushServiceProvider extends ServiceProvider
 {
