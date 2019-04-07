@@ -37,7 +37,10 @@ trait SharedInstallerActions
 
     protected function gracefullyExit()
     {
-        $message = $this->exception->getMessage() ?? 'Ups. Looks like this step failed. Please check your Laravel logs for more information';
+
+        $message = blank($this->exception->getMessage()) ?
+                    'Ups. Looks like this step failed. Please check your Laravel logs for more information' :
+                    $this->exception->getMessage();
 
         $this->error("An error occurred! => $message");
         exit();
