@@ -3,9 +3,9 @@
 namespace Laraning\Larapush\Commands;
 
 use sixlive\DotenvEditor\DotenvEditor;
-use Laraning\Larapush\Abstracts\DeployerInstallerBootstrap;
+use Laraning\Larapush\Abstracts\InstallerBootstrap;
 
-final class InstallLocalCommand extends DeployerInstallerBootstrap
+final class InstallLocalCommand extends InstallerBootstrap
 {
     protected $messages = [
         'client.required' => 'The --client option is required.',
@@ -19,7 +19,7 @@ final class InstallLocalCommand extends DeployerInstallerBootstrap
                             {--secret= : Your OAuth Secret}
                             {--token= : The Remote server token, must be the same}';
 
-    protected $description = 'Installs Deployer in your local environment';
+    protected $description = 'Installs Larapush in your local environment';
 
     public function handle()
     {
@@ -51,7 +51,7 @@ final class InstallLocalCommand extends DeployerInstallerBootstrap
         $this->setEnvData();
         $bar->advance();
 
-        $this->publishDeployerResources();
+        $this->publishLarapushResources();
         $bar->advance();
 
         $this->clearConfigurationCache();
@@ -66,11 +66,11 @@ final class InstallLocalCommand extends DeployerInstallerBootstrap
 
         $env = new DotenvEditor;
         $env->load(base_path('.env'));
-        $env->set('DEPLOYER_TYPE', 'local');
-        $env->set('DEPLOYER_TOKEN', $this->option('token'));
-        $env->set('DEPLOYER_OAUTH_CLIENT', $this->option('client'));
-        $env->set('DEPLOYER_OAUTH_SECRET', $this->option('secret'));
-        $env->set('DEPLOYER_REMOTE_URL', $this->url);
+        $env->set('LARAPUSH_TYPE', 'local');
+        $env->set('LARAPUSH_TOKEN', $this->option('token'));
+        $env->set('LARAPUSH_OAUTH_CLIENT', $this->option('client'));
+        $env->set('LARAPUSH_OAUTH_SECRET', $this->option('secret'));
+        $env->set('LARAPUSH_REMOTE_URL', $this->url);
         $env->save();
         unset($env);
     }

@@ -4,9 +4,9 @@ namespace Laraning\Larapush\Commands;
 
 use Laraning\Larapush\Support\Local;
 use Laraning\Larapush\Concerns\SimplifiesConsoleOutput;
-use Laraning\Larapush\Abstracts\DeployerInstallerBootstrap;
+use Laraning\Larapush\Abstracts\LaraningInstallerBootstrap;
 
-final class PushCommand extends DeployerInstallerBootstrap
+final class PushCommand extends LaraningInstallerBootstrap
 {
     use SimplifiesConsoleOutput;
 

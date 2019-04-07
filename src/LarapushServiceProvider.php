@@ -44,7 +44,7 @@ final class LarapushServiceProvider extends ServiceProvider
 
     protected function loadRemoteRoutes()
     {
-        // Load Deployer routes using the api middleware.
+        // Load Larapush routes using the api middleware.
         Route::as('larapush.')
              ->middleware('same-token', 'client')
              ->namespace('Laraning\Larapush\Http\Controllers')

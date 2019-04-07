@@ -6,11 +6,11 @@ use sixlive\DotenvEditor\DotenvEditor;
 
 trait SharedInstallerActions
 {
-    protected function publishDeployerResources()
+    protected function publishLarapushResources()
     {
-        $this->bulkInfo(2, 'Publishing Deployer resources...', 1);
+        $this->bulkInfo(2, 'Publishing Laraning resources...', 1);
         $this->runProcess('php artisan vendor:publish
-                                       --provider="Laraning\Larapush\DeployerServiceProvider"
+                                       --provider="Laraning\Larapush\LaraningServiceProvider"
                                        --force
                                        --quiet');
     }
@@ -26,11 +26,11 @@ trait SharedInstallerActions
     {
         $env = new DotenvEditor;
         $env->load(base_path('.env'));
-        $env->unset('DEPLOYER_TYPE');
-        $env->unset('DEPLOYER_TOKEN');
-        $env->unset('DEPLOYER_REMOTE_URL');
-        $env->unset('DEPLOYER_OAUTH_CLIENT');
-        $env->unset('DEPLOYER_OAUTH_SECRET');
+        $env->unset('LARAPUSH_TYPE');
+        $env->unset('LARAPUSH_TOKEN');
+        $env->unset('LARAPUSH_REMOTE_URL');
+        $env->unset('LARAPUSH_OAUTH_CLIENT');
+        $env->unset('LARAPUSH_OAUTH_SECRET');
         $env->save();
         unset($env);
     }

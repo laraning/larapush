@@ -8,7 +8,7 @@ use Laraning\Larapush\Concerns\SharedInstallerActions;
 use Laraning\Larapush\Concerns\SimplifiesConsoleOutput;
 use Laraning\Larapush\Concerns\ValidatesConsoleArguments;
 
-abstract class DeployerInstallerBootstrap extends Command
+abstract class InstallerBootstrap extends Command
 {
     use CanRunProcesses;
     use SharedInstallerActions;

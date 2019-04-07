@@ -9,7 +9,7 @@ return [
      * 'local' = Your local dev machine
      * 'remote' = Your remote codebase server.
      */
-    'type' => env('DEPLOYER_TYPE', 'local'),
+    'type' => env('LARAPUSH_TYPE', 'local'),
 
     /*
      * Your remove server information group.
@@ -17,7 +17,7 @@ return [
     'remote' => [
         // Your remote server URL.
         // Manually configured when you install larapush on your local computer.
-        'url' => env('DEPLOYER_REMOTE_URL'),
+        'url' => env('LARAPUSH_REMOTE_URL'),
 
         // Your route prefix, default is <your-server-url>/larapush.
         'prefix' => '/larapush',
@@ -69,13 +69,13 @@ return [
      * Automatically filled on the remote server installation.
      */
     'oauth' => [
-        'client' => env('DEPLOYER_OAUTH_CLIENT'),
-        'secret' => env('DEPLOYER_OAUTH_SECRET'),
+        'client' => env('LARAPUSH_OAUTH_CLIENT'),
+        'secret' => env('LARAPUSH_OAUTH_SECRET'),
     ],
 
     /*
      * Local / Remote token. Must be the same in both environments.
      * Automatically created on your local or remote server installations.
      */
-    'token' => env('DEPLOYER_TOKEN'),
+    'token' => env('LARAPUSH_TOKEN'),
 ];

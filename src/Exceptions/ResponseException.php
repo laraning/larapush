@@ -64,7 +64,7 @@ final class ResponseException extends Exception
          * json.line
          */
 
-        return "Deployer Response Exception
+        return "Laraning Response Exception
                 HTTP {$this->status} {$this->reason}
                 {$this->message}";
     }

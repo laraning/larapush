@@ -6,9 +6,9 @@ use Laravel\Passport\Client;
 use Illuminate\Support\Facades\DB;
 use sixlive\DotenvEditor\DotenvEditor;
 use Illuminate\Support\Facades\Artisan;
-use Laraning\Larapush\Abstracts\DeployerInstallerBootstrap;
+use Laraning\Larapush\Abstracts\LaraningInstallerBootstrap;
 
-final class InstallRemoteCommand extends DeployerInstallerBootstrap
+final class InstallRemoteCommand extends LaraningInstallerBootstrap
 {
     private $client;
 
@@ -16,7 +16,7 @@ final class InstallRemoteCommand extends DeployerInstallerBootstrap
 
     protected $signature = 'larapush:install-remote';
 
-    protected $description = 'Installs Deployer on your remote environment';
+    protected $description = 'Installs Laraning on your remote environment';
 
     public function __construct()
     {
@@ -34,7 +34,7 @@ final class InstallRemoteCommand extends DeployerInstallerBootstrap
             $this->steps += 6;
         }
 
-        $this->bulkInfo(2, 'Installing Deployer on a REMOTE environment...', 1);
+        $this->bulkInfo(2, 'Installing Laraning on a REMOTE environment...', 1);
         $this->bar = $this->output->createProgressBar($this->steps);
         $this->bar->start();
 
@@ -47,7 +47,7 @@ final class InstallRemoteCommand extends DeployerInstallerBootstrap
             $this->installLaravelPassport();
         }
 
-        $this->publishDeployerResources();
+        $this->publishLaraningResources();
         $this->bar->advance();
 
         $this->installClientCredentialsGrant();
@@ -69,20 +69,20 @@ final class InstallRemoteCommand extends DeployerInstallerBootstrap
 
         $editor = new DotenvEditor;
         $editor->load(base_path('.env'));
-        $editor->set('DEPLOYER_TYPE', 'remote');
-        $editor->set('DEPLOYER_OAUTH_CLIENT', $this->client);
-        $editor->set('DEPLOYER_OAUTH_SECRET', $this->secret);
+        $editor->set('LARAPUSH_TYPE', 'remote');
+        $editor->set('LARAPUSH_OAUTH_CLIENT', $this->client);
+        $editor->set('LARAPUSH_OAUTH_SECRET', $this->secret);
 
         $this->token = strtoupper(str_random(10));
 
-        $editor->set('DEPLOYER_TOKEN', $this->token);
+        $editor->set('LARAPUSH_TOKEN', $this->token);
         $editor->save();
     }
 
     protected function showLocalInstallInformation()
     {
         $this->bulkInfo(2, 'ALL DONE!', 0);
-        $this->bulkInfo(1, 'Please install Deployer on your local Laravel app and run the following artisan command:', 1);
+        $this->bulkInfo(1, 'Please install Laraning on your local Laravel app and run the following artisan command:', 1);
         $this->info("php artisan larapush:install-local --client={$this->client} --secret={$this->secret} --token={$this->token}");
     }
 
@@ -96,7 +96,7 @@ final class InstallRemoteCommand extends DeployerInstallerBootstrap
     protected function installClientCredentialsGrant()
     {
         $this->bulkInfo(2, 'Installing Laravel Password client credentials grant...', 1);
-        $appName = 'Laravel Deployer Grant Client';
+        $appName = 'Laravel Laraning Grant Client';
         $this->runProcess("php artisan passport:client --client
                                                        --name=\"{$appName}\"
                                                        --quiet", getcwd());
