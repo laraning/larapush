@@ -6,11 +6,11 @@ use Laraning\Larapush\Support\Local;
 use Laraning\Larapush\Concerns\SimplifiesConsoleOutput;
 use Laraning\Larapush\Abstracts\DeployerInstallerBootstrap;
 
-final class PushCommand extends DeployerInstallerBootstrap
+final class DeployCommand extends DeployerInstallerBootstrap
 {
     use SimplifiesConsoleOutput;
 
-    protected $signature = 'push';
+    protected $signature = 'deploy';
 
     protected $description = 'Deploys your codebase content to your remote environment';
 
