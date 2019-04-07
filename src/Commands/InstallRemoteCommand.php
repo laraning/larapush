@@ -102,7 +102,7 @@ final class InstallRemoteCommand extends InstallerBootstrap
             $this->runProcess("php artisan passport:client --client
                                                            --name=\"{$appName}\"
                                                            --quiet", getcwd());
-            //Artisan::call("passport:client --client --name=\"{$appName}\" --quiet");
+        //Artisan::call("passport:client --client --name=\"{$appName}\" --quiet");
         }, function ($exception) {
             $this->exception = $exception;
             $this->gracefullyExit();
