@@ -6,7 +6,6 @@ use Laravel\Passport\Client;
 use Illuminate\Support\Facades\DB;
 use sixlive\DotenvEditor\DotenvEditor;
 use Illuminate\Support\Facades\Artisan;
-use Laraning\Larapush\Abstracts\InstallerBootstrap;
 
 final class InstallRemoteCommand extends LaraningInstallerBootstrap
 {
