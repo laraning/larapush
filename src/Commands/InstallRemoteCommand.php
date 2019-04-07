@@ -2,12 +2,13 @@
 
 namespace Laraning\Larapush\Commands;
 
-use Laravel\Passport\Client;
-use Illuminate\Support\Facades\DB;
-use sixlive\DotenvEditor\DotenvEditor;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Laraning\Larapush\Abstracts\InstallerBootstrap;
+use Laravel\Passport\Client;
+use sixlive\DotenvEditor\DotenvEditor;
 
-final class InstallRemoteCommand extends LaraningInstallerBootstrap
+final class InstallRemoteCommand extends InstallerBootstrap
 {
     private $client;
 
