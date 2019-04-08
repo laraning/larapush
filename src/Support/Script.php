@@ -9,7 +9,7 @@ final class Script
 {
     use CanRunProcesses;
 
-    function __construct(array $scriptPayload)
+    public function __construct(array $scriptPayload)
     {
         $this->type = $scriptPayload[1];
         $this->command = $scriptPayload[0];
@@ -23,6 +23,7 @@ final class Script
                 if ($error != 0) {
                     throw \Exception('There was an error on your Artisan command - '.Artisan::output());
                 }
+
                 return Artisan::output();
                 break;
 
