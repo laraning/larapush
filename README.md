@@ -1,6 +1,6 @@
 # Larapush
 
-A way to deploy your codebase into your remote server in a single Artisan command: php artisan push.
+A way to push your codebase into your remote server in a single Artisan command: php artisan push.
 
 ## Installation
 

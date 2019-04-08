@@ -1,6 +1,6 @@
 {
     "name": "laraning/larapush",
-    "description": "php artisan push - Bang! Your codebase deployed to your remote server!",
+    "description": "php artisan push - Deploy your codebase with a single Artisan command",
     "keywords": [
         "laraning",
         "larapush",

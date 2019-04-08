@@ -40,7 +40,7 @@ final class RemoteOperation
         if (Storage::disk('larapush')->exists("{$transaction}/runbook.json")) {
             $resource = json_decode(Storage::disk('larapush')->get("{$transaction}/runbook.json"));
 
-            collect(data_get($resource, "{$type}_deployment"))->each(function ($item) use ($transaction, $type) {
+            collect(data_get($resource, "{$type}_push"))->each(function ($item) use ($transaction, $type) {
                 $output = $this->runScript($item);
 
                 if ($output !== null) {

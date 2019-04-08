@@ -25,21 +25,21 @@ return [
 
     /*
      * What scripts/processes do you want to run before and after your
-     * deployment was completed?
+     * codebase push.
      * You can use (as many as you want):
      * Artisan commands. E.g.: 'cache:clear'
      * Invokable Classes: E.g.: MyClass::class (will call your __invoke() directly).
      * Custom Class methods: E.g.: 'MyClass@myMethod'.
      */
     'scripts' => [
-        'before_deployment' => [
+        'before_push' => [
             ['cache:clear', ScriptType::ARTISAN],
             ['view:clear', ScriptType::ARTISAN],
             [MyClass::class, ScriptType::CLASSMETHOD],
             ['MyClass@method', ScriptType::CLASSMETHOD],
             ['composer update', ScriptType::SHELLCMD],
         ],
-        'after_deployment' => [],
+        'after_push' => [],
     ],
 
     // What's the codebase you want to upload to your remote server?
