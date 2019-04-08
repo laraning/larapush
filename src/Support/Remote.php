@@ -20,8 +20,8 @@ final class RemoteOperation
 {
     use CanRunProcesses;
 
-    const PREDEPLOYMENT = 'before';
-    const POSTDEPLOYMENT = 'after';
+    const PREPUSH = 'before';
+    const POSTPUSH = 'after';
 
     public static function new(...$args)
     {
@@ -54,12 +54,12 @@ final class RemoteOperation
 
     public function runPostScripts(string $transaction) : void
     {
-        $this->runScripts(self::POSTDEPLOYMENT, $transaction);
+        $this->runScripts(self::POSTPUSH, $transaction);
     }
 
     public function runPreScripts(string $transaction) : void
     {
-        $this->runScripts(self::PREDEPLOYMENT, $transaction);
+        $this->runScripts(self::PREPUSH, $transaction);
     }
 
     public function preChecks() : void
@@ -88,8 +88,19 @@ final class RemoteOperation
         });
     }
 
-    private function runScript($mixed) : string
+    private function runScript(array $command) : string
     {
+        $script = new Script($command);
+
+        larapush_rescue(function () {
+            return $script->execute();
+        }, function ($exception) {
+            throw new RemoteException($exception->getMessage());
+        });
+
+        return $output;
+
+        /*
         // Invokable class.
         if (class_exists($mixed)) {
             return (new $mixed)();
@@ -107,5 +118,6 @@ final class RemoteOperation
         }
 
         return Artisan::output();
+        */
     }
 }
