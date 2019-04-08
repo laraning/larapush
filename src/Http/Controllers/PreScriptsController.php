@@ -22,7 +22,8 @@ final class PreScriptsController extends RemoteBaseController
         larapush_rescue(function () use ($request) {
             Remote::runPreScripts($request->input('transaction'));
         }, function ($exception) {
-            return response_payload(false, ['message'=> $exception->getMessage()]);
+            throw \Exception($exception->getMessage());
+            //return response_payload(false, ['message'=> $exception->getMessage()]);
         });
 
         return response_payload(true);
