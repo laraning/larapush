@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Laraning\Larapush\Support\Remote;
 use Illuminate\Support\Facades\Validator;
 use Laraning\Larapush\Abstracts\RemoteBaseController;
-use \Exception;
 
 final class PreScriptsController extends RemoteBaseController
 {

@@ -2,10 +2,10 @@
 
 namespace Laraning\Larapush\Commands;
 
-use Laraning\Larapush\Abstracts\InstallerBootstrap;
-use Laraning\Larapush\Concerns\SimplifiesConsoleOutput;
 use Laraning\Larapush\Support\Local;
 use Laraning\Larapush\Support\Remote;
+use Laraning\Larapush\Abstracts\InstallerBootstrap;
+use Laraning\Larapush\Concerns\SimplifiesConsoleOutput;
 
 final class PushCommand extends InstallerBootstrap
 {

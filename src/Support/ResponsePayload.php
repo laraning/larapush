@@ -7,7 +7,7 @@ use Zttp\ZttpResponse;
 /**
  * Class that is instanciated upon a server response.
  * All responses from the server are in json format (except HTTP connection exceptions).
- * Each ResponsePayload object is composed by 3 scopes:
+ * Each ResponsePayload object is composed by 3 scopes:.
  *
  * $exception - If there was a connection/request exception under the HTTP layer.
  * $payload   - The actual response data that is received, in json format.
@@ -37,7 +37,7 @@ final class ResponsePayload
         }
 
         if ($response !== null) {
-        // In case json data was returned, let's add to our payload attribute.
+            // In case json data was returned, let's add to our payload attribute.
             if ($response->json() !== null) {
                 $this->payload = new \StdClass;
                 $this->payload = $response->json();
