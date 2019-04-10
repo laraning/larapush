@@ -89,17 +89,10 @@ final class RemoteOperation
 
     private function runScript(array $command)
     {
-        $script = new Script($command);
         $output = null;
 
+        $script = new Script($command);
         $output = $script->execute();
-        /*
-        larapush_rescue(function () use ($script, &$output) {
-            $output = $script->execute();
-        }, function ($exception) {
-            throw new RemoteException($exception->getMessage());
-        });
-        */
 
         return $output;
     }

@@ -81,13 +81,6 @@ final class LocalOperation
 
         $zip = Zipper::make($fqfilename);
 
-        /*
-         * Add the codebase files and folders.
-         * Collection iterator to add each resource to the Zipper object.
-         * Calculation on the folder path for the files iterator using the
-         * pathinfo function.
-         */
-
         collect(app('config')->get('larapush.codebase.folders'))->each(function ($item) use (&$zip) {
             if (! blank($item)) {
                 $zip->folder($item)->add(base_path($item));
@@ -171,14 +164,6 @@ final class LocalOperation
         $this->checkResponseStatus($response);
     }
 
-    /**
-     * A response status check allows the verification to raise, or not a
-     * response exception in the local environment. At the moment, is based in 2 conditions:
-     * isOk == true || payload.result != true.
-     *
-     * @param  ResponsePayload $response The response payload.
-     * @return void
-     */
     private function checkResponseStatus(ResponsePayload $response) : void
     {
         if (! $response->isOk) {
