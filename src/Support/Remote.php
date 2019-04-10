@@ -3,7 +3,6 @@
 namespace Laraning\Larapush\Support;
 
 use Chumper\Zipper\Facades\Zipper;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Laraning\Larapush\Concerns\CanRunProcesses;
 use Laraning\Larapush\Exceptions\RemoteException;

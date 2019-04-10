@@ -3,7 +3,6 @@
 namespace Laraning\Larapush\Exceptions;
 
 use Exception;
-use Illuminate\Support\Facades\Log;
 
 final class AccessTokenException extends Exception
 {

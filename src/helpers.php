@@ -73,10 +73,10 @@ function get_response_payload_friendly_message(ResponsePayload $response)
 {
     // In case a connection/request exception is active.
     if ($response->exception !== null) {
-        return $response->exception->message .
-               ' (line ' .
-               $response->exception->line .
-               ') in ' .
+        return $response->exception->message.
+               ' (line '.
+               $response->exception->line.
+               ') in '.
                $response->exception->file;
     }
 
