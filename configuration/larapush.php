@@ -35,11 +35,15 @@ return [
         'pre_scripts' => [
             ['cache:clear', ScriptType::ARTISAN],
             ['view:clear', ScriptType::ARTISAN],
+            /*
             [MyClass::class, ScriptType::CLASSMETHOD],
             ['MyClass@method', ScriptType::CLASSMETHOD],
             ['composer update', ScriptType::SHELLCMD],
+            */
         ],
-        'post_scripts' => [],
+        'post_scripts' => [
+            ['view:clear', ScriptType::ARTISAN],
+        ],
     ],
 
     // What's the codebase you want to upload to your remote server?
