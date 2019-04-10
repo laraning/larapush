@@ -19,8 +19,8 @@ final class RemoteOperation
 {
     use CanRunProcesses;
 
-    const PREPUSH = 'before';
-    const POSTPUSH = 'after';
+    const PREPUSH = 'pre_scripts';
+    const POSTPUSH = 'post_scripts';
 
     public static function new(...$args)
     {
@@ -39,7 +39,7 @@ final class RemoteOperation
         if (Storage::disk('larapush')->exists("{$transaction}/runbook.json")) {
             $resource = json_decode(Storage::disk('larapush')->get("{$transaction}/runbook.json"));
 
-            collect(data_get($resource, "{$type}_push"))->each(function ($item) use ($transaction, $type) {
+            collect(data_get($resource, "{$type}"))->each(function ($item) use ($transaction, $type) {
                 $output = $this->runScript($item);
 
                 if ($output !== null) {
