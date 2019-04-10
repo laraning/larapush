@@ -8,19 +8,19 @@ use Laraning\Larapush\Support\ResponsePayload;
 
 final class ResponseException extends Exception
 {
-    public $response;
-    public $reason;
-    public $status;
-    public $message;
+    public $response = '';
+    public $reason = '';
+    public $status = '';
+    public $message = '';
 
     public function __construct(ResponsePayload $response)
     {
         $this->response = $response;
-        $this->message = 'Unknown ResponsePayload exception. Sorry about that.';
+        $this->message = 'Unknown ResponsePayload exception';
 
-        if (isset($response->instance)) {
-            $this->reason = $response->instance->getReasonPhrase();
-            $this->status = $response->instance->getStatusCode();
+        if (isset($response->exception)) {
+            $this->reason = $response->exception->getReasonPhrase();
+            $this->status = $response->exception->getStatusCode();
         }
 
         if (isset($response->exception)) {

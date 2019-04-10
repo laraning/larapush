@@ -2,9 +2,10 @@
 
 namespace Laraning\Larapush\Commands;
 
-use Laraning\Larapush\Support\Local;
 use Laraning\Larapush\Abstracts\InstallerBootstrap;
 use Laraning\Larapush\Concerns\SimplifiesConsoleOutput;
+use Laraning\Larapush\Support\Local;
+use Laraning\Larapush\Support\Remote;
 
 final class PushCommand extends InstallerBootstrap
 {
@@ -101,8 +102,8 @@ final class PushCommand extends InstallerBootstrap
         $this->bulkInfo(2, 'Running your pre-scripts before unpacking your codebase (if they exist)...', 1);
 
         larapush_rescue(function () {
-            Local::getAccessToken()
-                 ->runPreScripts($this->transaction);
+            $response = Local::getAccessToken()
+                              ->runPreScripts($this->transaction);
         }, function ($exception) {
             $this->exception = $exception;
             $this->gracefullyExit();

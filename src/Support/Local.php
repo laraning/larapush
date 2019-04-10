@@ -5,6 +5,7 @@ namespace Laraning\Larapush\Support;
 use Chumper\Zipper\Facades\Zipper;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Laraning\Larapush\Exceptions\AccessTokenException;
 use Laraning\Larapush\Exceptions\LocalException;
 use Laraning\Larapush\Exceptions\ResponseException;
 
@@ -46,7 +47,7 @@ final class LocalOperation
                               ->withPayload(['transaction' => $transaction])
                               ->call(larapush_remote_url('post-scripts'));
 
-        $this->checkResponseAcknowledgement($response);
+        $this->checkResponseStatus($response);
     }
 
     public function deploy(string $transaction) : void
@@ -58,7 +59,7 @@ final class LocalOperation
                               ->withPayload(['transaction' => $transaction])
                               ->call(larapush_remote_url('deploy'));
 
-        $this->checkResponseAcknowledgement($response);
+        $this->checkResponseStatus($response);
     }
 
     public function runPreScripts(string $transaction) : void
@@ -70,7 +71,7 @@ final class LocalOperation
                               ->withPayload(['transaction' => $transaction])
                               ->call(larapush_remote_url('pre-scripts'));
 
-        $this->checkResponseAcknowledgement($response);
+        $this->checkResponseStatus($response);
     }
 
     public function CreateCodebaseZip(string $fqfilename) : void
@@ -115,7 +116,7 @@ final class LocalOperation
                               ->withPayload(['codebase' => base64_encode(file_get_contents(larapush_storage_path("{$transaction}/codebase.zip")))])
                               ->call(larapush_remote_url('upload'));
 
-        $this->checkResponseAcknowledgement($response);
+        $this->checkResponseStatus($response);
     }
 
     public function preChecks() : void
@@ -142,8 +143,8 @@ final class LocalOperation
         $this->checkAccessToken($response);
 
         $this->accessToken = new AccessToken(
-            $response->payload->json['expires_in'],
-            $response->payload->json['access_token']
+            $response->payload['expires_in'],
+            $response->payload['access_token']
         );
 
         return $this;
@@ -157,7 +158,7 @@ final class LocalOperation
                           ->withPayload(['larapush-token' => app('config')->get('larapush.token')])
                           ->call(larapush_remote_url('prechecks'));
 
-        $this->checkResponseAcknowledgement($response);
+        $this->checkResponseStatus($response);
     }
 
     public function ping() : void
@@ -168,27 +169,28 @@ final class LocalOperation
                           ->withPayload(['larapush-token' => app('config')->get('larapush.token')])
                           ->call(larapush_remote_url('ping'));
 
-        $this->checkResponseAcknowledgement($response);
+        $this->checkResponseStatus($response);
     }
 
     /**
-     * A response acknowledgement will always bring:
-     * isOk = true
-     * payload.result = true.
+     * A response status check allows the verification to raise, or not a
+     * response exception in the local environment. At the moment, is based in 2 conditions:
+     * isOk == true || payload.result != true.
+     *
      * @param  ResponsePayload $response The response payload.
      * @return void
      */
-    private function checkResponseAcknowledgement(ResponsePayload $response) : void
+    private function checkResponseStatus(ResponsePayload $response) : void
     {
-        if (! $response->isOk || data_get($response->payload->json, 'payload.result') != true) {
-            throw new ResponseException($response);
+        if (! $response->isOk) {
+            throw new LocalException(get_response_payload_friendly_message($response));
         }
     }
 
     private function checkAccessToken(?ResponsePayload $response) : void
     {
-        if (! $response->isOk || data_get($response->payload->json, 'payload.access_token') != null) {
-            throw new ResponseException($response);
+        if (! $response->isOk || data_get($response->payload, 'access_token') == null) {
+            throw new AccessTokenException(get_response_payload_friendly_message($response));
         }
     }
 

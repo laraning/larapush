@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laraning\Larapush\Support\Remote;
 use Illuminate\Support\Facades\Validator;
 use Laraning\Larapush\Abstracts\RemoteBaseController;
+use \Exception;
 
 final class PreScriptsController extends RemoteBaseController
 {
@@ -16,16 +17,21 @@ final class PreScriptsController extends RemoteBaseController
         ]);
 
         if ($validator->fails()) {
-            return response_payload(false, ['message'=> $validator->errors()->first()], 201);
+            return response_payload(['message'=> $validator->errors()->first()], 403);
         }
 
+        $responsePayload = response_payload();
+
+        Remote::runPreScripts($request->input('transaction'));
+
+        /*
         larapush_rescue(function () use ($request) {
             Remote::runPreScripts($request->input('transaction'));
-        }, function ($exception) {
-            throw \Exception($exception->getMessage());
-            //return response_payload(false, ['message'=> $exception->getMessage()]);
+        }, function ($exception) use (&$responsePayload) {
+            $responsePayload = response_payload(['message' => $exception->getMessage()], 403);
         });
+        */
 
-        return response_payload(true);
+        return response_payload();
     }
 }

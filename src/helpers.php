@@ -1,5 +1,6 @@
 <?php
 
+use Laraning\Larapush\Support\ResponsePayload;
 
 function ascii_title()
 {
@@ -42,11 +43,9 @@ function append_line_to_env(string $key, $value)
     return file_put_contents(base_path('.env'), PHP_EOL."{$key}={$value}", FILE_APPEND);
 }
 
-function response_payload($result, $payload = [], $statusCode = 200)
+function response_payload($payload = [], $statusCode = 200)
 {
-    $data = ['payload' => array_merge(['result'=> $result], $payload)];
-
-    return response(json_encode($data), $statusCode);
+    return response(json_encode($payload), $statusCode);
 }
 
 function larapush_storage_path($path = null)
@@ -67,5 +66,38 @@ function larapush_rescue(callable $callback, $rescue = null)
         report($e);
 
         return $rescue($e);
+    }
+}
+
+function get_response_payload_friendly_message(ResponsePayload $response)
+{
+    // In case a connection/request exception is active.
+    if ($response->exception !== null) {
+        return $response->exception->message .
+               ' (line ' .
+               $response->exception->line .
+               ') in ' .
+               $response->exception->file;
+    }
+
+    // In case a response payload exists.
+    if (isset($response->payload)) {
+        $payload = (object) $response->payload;
+
+        $message = 'Undefined response message. Please check the Laravel logs.';
+
+        if (isset($payload->message)) {
+            $message = $payload->message;
+        }
+
+        if (isset($payload->line)) {
+            $message .= " (line $payload->line)";
+        }
+
+        if (isset($payload->file)) {
+            $message .= " (file $payload->file)";
+        }
+
+        return $message;
     }
 }

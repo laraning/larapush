@@ -44,7 +44,7 @@ final class RemoteOperation
                 $output = $this->runScript($item);
 
                 if ($output !== null) {
-                    Storage::disk('larapush')->append("{$transaction}/output_{$type}.json", "Command: {$item}");
+                    Storage::disk('larapush')->append("{$transaction}/output_{$type}.json", "Command: {$item[0]}");
                     Storage::disk('larapush')->append("{$transaction}/output_{$type}.json", 'Output:');
                     Storage::disk('larapush')->append("{$transaction}/output_{$type}.json", "{$output}");
                 }
@@ -88,36 +88,20 @@ final class RemoteOperation
         });
     }
 
-    private function runScript(array $command) : string
+    private function runScript(array $command)
     {
         $script = new Script($command);
+        $output = null;
 
-        larapush_rescue(function () {
-            return $script->execute();
+        $output = $script->execute();
+        /*
+        larapush_rescue(function () use ($script, &$output) {
+            $output = $script->execute();
         }, function ($exception) {
             throw new RemoteException($exception->getMessage());
         });
+        */
 
         return $output;
-
-        /*
-        // Invokable class.
-        if (class_exists($mixed)) {
-            return (new $mixed)();
-        }
-
-        // Custom method.
-        if (strpos($mixed, '@')) {
-            return app()->call($mixed);
-        }
-
-        // Artisan command.
-        $error = Artisan::call($mixed);
-        if ($error != 0) {
-            throw new RemoteException('There was an error on your Artisan command (pre-script):'.Artisan::output());
-        }
-
-        return Artisan::output();
-        */
     }
 }

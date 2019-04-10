@@ -1,6 +1,6 @@
 <?php
 
-namespace Waygou\Deployer\Support;
+namespace Laraning\Larapush\Support;
 
 use Illuminate\Support\Facades\Artisan;
 use Laraning\Larapush\Concerns\CanRunProcesses;

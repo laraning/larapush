@@ -2,8 +2,8 @@
 
 namespace Laraning\Larapush\Commands;
 
-use sixlive\DotenvEditor\DotenvEditor;
 use Laraning\Larapush\Abstracts\InstallerBootstrap;
+use sixlive\DotenvEditor\DotenvEditor;
 
 final class InstallLocalCommand extends InstallerBootstrap
 {
